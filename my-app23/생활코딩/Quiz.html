@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Edu+VIC+WA+NT+Beginner&family=Indie+Flower&family=Permanent+Marker&family=Shadows+Into+Light&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.1/redux.js"></script>
+</head>
+<body>
+  <style>
+    #Container{
+      border: 3px solid black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    #Container div {
+      box-sizing: border-box;
+      border: 5px solid orange;
+      height:200px;
+      width:32%;
+      margin:5px;
+      padding: 20px;
+      font-size: 30px;
+    }
+  </style>
+  <div id="actionBox">
+    <input type="text" placeholder="Type anything">
+    <button onclick="clickMe()">Click Me!</button>
+    <button onclick="changeRadius(10)">Rounded</button>
+    <button onclick="changeRadius(15)">Circle!</button>
+    <button onclick="changeRadius(0)">Rectangle!</button>
+    <button onclick="changeColor('red')">Red!</button>
+    <button onclick="changeColor('green')">Green!</button>
+    <button onclick="changeColor('blue')">Blue!</button>
+  </div>
+  <div id="Container">
+    <div class="textBox" id="1"></div>
+    <div class="textBox" style="font-family:'Anton'" id="2"></div>
+    <div class="textBox" style="font-family:'Edu VIC WA NT Beginner'" id="3"></div>
+    <div class="textBox" style="font-family:'Indie Flower'" id="4"></div>
+    <div class="textBox" style="font-family:'Permanent Marker'" id="5"></div>
+    <div class="textBox" style="font-family:'Shadows Into Light'" id="6"></div>
+  </div>
+  <script>
+    let divs = document.querySelectorAll('.textBox')
+
+        function reducer(state, action) {
+            console.log(state, action);
+            if (state === undefined) {
+                return { color: 'orange' }
+            }
+            var newState;
+            if (action.type === 'CHANGE_COLOR') {
+                return{  
+                ...state, 
+                color: action.color 
+              }
+            }
+            else if (action.type === 'CHANGE_TEXT'){
+              return{
+                ...state, 
+                text: action.text
+              }
+            }
+            else if (action.type === 'CHANGE_RADIUS'){
+                return{
+                  ...state, 
+                  radius: action.radius
+                }
+            }
+        }
+
+        var store = Redux.createStore(
+            reducer,
+            window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() 
+        );
+
+
+    function clickMe(){
+      let text = document.querySelector('input')
+
+      store.dispatch({type:'CHANGE_TEXT', text:`${text.value}`})
+      var state = store.getState();
+
+      divs.forEach((e) => {
+        e.innerText = `${state.text}`
+      })
+
+      text.value = "";
+    }
+
+    function changeColor(e){
+      store.dispatch({type:'CHANGE_COLOR', color:e})
+      var state = store.getState();
+
+      divs.forEach((e) => {
+        e.style.border = ` 5px solid ${state.color}`
+      }) 
+    }
+
+
+    function changeRadius(r){
+      store.dispatch({type:'CHANGE_RADIUS', radius:r})
+      var state = store.getState();
+
+      divs.forEach((e) => {
+        e.style.borderRadius = `${state.radius}px`
+      }) 
+    }
+  
+
+  </script>
+</body>
+</html>
