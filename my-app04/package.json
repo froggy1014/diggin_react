@@ -1,6 +1,5 @@
 {
-  "homepage" : "https://froggy1014.github.io/diggin_react/",
-  "name": "diggin_react",
+  "name": "my-app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
